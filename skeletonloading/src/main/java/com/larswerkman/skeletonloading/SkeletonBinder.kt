@@ -7,7 +7,7 @@ class SkeletonBinder internal constructor(
     private val views: MutableList<SkeletonView>
 ) {
 
-    private var isShowing = false
+    var isShowing = false
         get
 
     init {

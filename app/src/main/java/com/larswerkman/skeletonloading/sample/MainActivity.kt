@@ -10,19 +10,29 @@ import com.larswerkman.views.skeleton
 
 class MainActivity : AppCompatActivity() {
 
-    val loading = SkeletonLoading(this, R.drawable.skeleton, AlphaAnimation(.2f, .8f))
+    private lateinit var loading: SkeletonLoading
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        loading = SkeletonLoading(this, R.drawable.skeleton, AlphaAnimation(.1f, .9f))
         loading.onCreate()
 
-        val textView: TextView? = null
+        val test = findViewById<TextView>(R.id.tvTest)
+
 
         val binder = loading.create {
-            bind(textView?.skeleton(SkeletonTextView.TextWidth.WEIGHT, 3.0))
+            bind(test?.skeleton(SkeletonTextView.TextWidth.LINES, 1.5))
         }
+
+        test.setOnClickListener {
+            if(binder.isShowing) binder.hide() else binder.show()
+        }
+
+        binder.show()
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

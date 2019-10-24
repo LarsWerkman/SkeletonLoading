@@ -22,6 +22,5 @@ class AlphaAnimation(
 
     override fun animate(drawable: Drawable, progress: Float) {
         drawable.alpha = (progress * 255f).roundToInt()
-        drawable.invalidateSelf()
     }
 }

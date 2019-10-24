@@ -34,8 +34,10 @@ abstract class SkeletonAnimation(
             update(progress)
         }
 
-        if (animator?.isRunning == true) {
-            animator?.start()
+        animator?.let {
+            if (!it.isRunning) {
+                it.start()
+            }
         }
     }
 
