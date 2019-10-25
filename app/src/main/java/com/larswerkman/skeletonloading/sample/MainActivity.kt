@@ -16,18 +16,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        loading = SkeletonLoading(this, R.drawable.skeleton, AlphaAnimation(.1f, .9f))
+        loading = SkeletonLoading(this, R.drawable.skeleton, AlphaAnimation(.1f, .6f))
         loading.onCreate()
 
         val test = findViewById<TextView>(R.id.tvTest)
 
 
         val binder = loading.create {
-            bind(test?.skeleton(SkeletonTextView.TextWidth.LINES, 1.5))
+            bind(test?.skeleton(SkeletonTextView.TextWidth.LINES, 0.5))
         }
 
         test.setOnClickListener {
-            if(binder.isShowing) binder.hide() else binder.show()
+            if (binder.isShowing) binder.hide() else binder.show()
         }
 
         binder.show()
