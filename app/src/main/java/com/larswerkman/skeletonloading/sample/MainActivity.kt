@@ -20,10 +20,8 @@ class MainActivity : AppCompatActivity() {
         loading.onCreate()
 
         val test = findViewById<TextView>(R.id.tvTest)
-
-
         val binder = loading.create {
-            bind(test?.skeleton(SkeletonTextView.TextWidth.LINES, 0.5))
+            bind(test.skeleton(SkeletonTextView.TextWidth.LINES, 2.4))
         }
 
         test.setOnClickListener {
