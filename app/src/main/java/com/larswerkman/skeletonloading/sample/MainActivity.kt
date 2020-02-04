@@ -1,12 +1,12 @@
 package com.larswerkman.skeletonloading.sample
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.larswerkman.skeletonloading.SkeletonLoading
 import com.larswerkman.skeletonloading.animations.AlphaAnimation
 import com.larswerkman.views.SkeletonTextView
 import com.larswerkman.views.skeleton
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,23 +17,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         loading = SkeletonLoading(this, R.drawable.skeleton, AlphaAnimation(.1f, .6f))
-        loading.onCreate()
+        lifecycle.addObserver(loading)
 
-        val test = findViewById<TextView>(R.id.tvTest)
         val binder = loading.create {
-            bind(test.skeleton(SkeletonTextView.TextWidth.LINES, 2.4))
+            bind(tvTest.skeleton(SkeletonTextView.TextWidth.LINES, 1.2))
+            bind(ivTest.skeleton(200f))
         }
 
-        test.setOnClickListener {
+        tvTest.setOnClickListener {
             if (binder.isShowing) binder.hide() else binder.show()
         }
 
         binder.show()
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        loading.onDestroy()
     }
 }

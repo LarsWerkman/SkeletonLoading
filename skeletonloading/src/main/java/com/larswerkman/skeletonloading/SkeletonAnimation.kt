@@ -3,7 +3,6 @@ package com.larswerkman.skeletonloading
 import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 import android.graphics.drawable.Drawable
-import android.view.View
 import java.util.concurrent.TimeUnit
 
 
@@ -45,17 +44,11 @@ abstract class SkeletonAnimation(
         animator?.end()
     }
 
-    abstract fun animate(view: View, progress: Float)
-
     abstract fun animate(drawable: Drawable, progress: Float)
 
     inner class Progress internal constructor(
         internal var progress: Float = 0f
     ) {
-        fun update(view: View) {
-            animate(view, progress)
-        }
-
         fun update(drawable: Drawable) {
             animate(drawable, progress)
         }

@@ -3,20 +3,22 @@ package com.larswerkman.skeletonloading
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 
 fun SkeletonLoading(
     context: Context,
     @DrawableRes style: Int,
-    animation: SkeletonAnimation?
+    animation: SkeletonAnimation? = null
 ): SkeletonLoading {
-    return SkeletonLoading(context, context.getDrawable(style)!!, animation)
+    return SkeletonLoading(context.getDrawable(style)!!, animation)
 }
 
 class SkeletonLoading(
-    private val context: Context,
-    private val style: Drawable,
-    private val animation: SkeletonAnimation?
-) {
+    private val drawable: Drawable,
+    private val animation: SkeletonAnimation? = null
+) : LifecycleObserver {
 
     private val binders = arrayListOf<SkeletonBinder>()
 
@@ -24,24 +26,33 @@ class SkeletonLoading(
         val builder = SkeletonBinder.Builder()
         block(builder)
 
-        val binder = SkeletonBinder(style, builder.views)
+        val binder = SkeletonBinder(drawable, builder.views)
         binders += binder
 
         return binder
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
         animation?.start { progress ->
-            progress.update(style)
-
             binders.forEach { binder ->
-                binder.update(progress)
+                if (binder.isUnbound) {
+                    binders.remove(binder)
+                } else if (binder.isShowing) {
+                    binder.update(progress)
+                }
             }
         }
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
         animation?.stop()
+
+        binders.forEach {
+            it.unbind()
+        }
+
         binders.clear()
     }
 }

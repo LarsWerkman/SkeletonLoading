@@ -2,7 +2,6 @@ package com.larswerkman.skeletonloading.animations;
 
 import android.animation.TimeInterpolator
 import android.graphics.drawable.Drawable
-import android.view.View
 import androidx.annotation.FloatRange
 import com.larswerkman.skeletonloading.SkeletonAnimation
 import java.util.concurrent.TimeUnit
@@ -15,11 +14,6 @@ class AlphaAnimation(
     interpolator: TimeInterpolator? = null,
     repeat: Boolean = true
 ) : SkeletonAnimation(start, end, duration, interpolator, repeat) {
-
-    override fun animate(view: View, progress: Float) {
-        view.alpha = progress
-    }
-
     override fun animate(drawable: Drawable, progress: Float) {
         drawable.alpha = (progress * 255f).roundToInt()
     }

@@ -10,9 +10,12 @@ class SkeletonBinder internal constructor(
     var isShowing = false
         get
 
+    var isUnbound = false
+        get
+
     init {
         views.forEach {
-            it.setup(style)
+            it.setup(style.constantState?.newDrawable() ?: style)
         }
     }
 
@@ -48,8 +51,9 @@ class SkeletonBinder internal constructor(
 
     fun unbind() {
         hide()
-
         views.clear()
+
+        isUnbound = true
     }
 
     data class Builder internal constructor(val views: ArrayList<SkeletonView> = arrayListOf()) {

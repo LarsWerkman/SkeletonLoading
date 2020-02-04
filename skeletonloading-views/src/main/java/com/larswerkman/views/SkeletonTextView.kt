@@ -27,11 +27,14 @@ class SkeletonTextView(
 ) : SkeletonView {
 
     private lateinit var onPreDraw: (view: View) -> Unit
-    private var listener: OneShotPreDrawListener? = null
+    private lateinit var drawable: Drawable
 
+    private var listener: OneShotPreDrawListener? = null
     private var text: CharSequence? = null
 
     override fun setup(drawable: Drawable) {
+        this.drawable = drawable
+
         onPreDraw = { draw(drawable) }
     }
 
@@ -43,18 +46,14 @@ class SkeletonTextView(
         val fontMetrics = view.paint.fontMetricsInt
         val textSize = view.paint.textSize
 
-        val charWidths = FloatArray(2)
-        view.paint.getTextWidths(ZERO_WIDTH_SPACE + LINE_BREAK, charWidths)
-
         view.text = buildSpannedString {
             when (width) {
                 TextWidth.CHARACTERS -> {
                     val widthInPixels = calculateWidth(value, textSize)
-                    val textWidth = charWidths[0].toInt()
 
                     append(
-                        ZERO_WIDTH_SPACE,
-                        SkeletonTextSpan(drawable, widthInPixels, textWidth, fontMetrics),
+                        SPACE,
+                        SkeletonTextSpan(drawable, widthInPixels, fontMetrics),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                     )
                 }
@@ -67,12 +66,11 @@ class SkeletonTextView(
                         val widthInPixels = calculateWidth(weightedValue, textSize)
                         val lastLine = i == numberOfLines
 
-                        val text = if (lastLine) ZERO_WIDTH_SPACE else LINE_BREAK
-                        val textWidth = (if (lastLine) charWidths[0] else charWidths[1]).toInt()
+                        val text = if (lastLine) SPACE else LINE_BREAK
 
                         append(
                             text,
-                            SkeletonTextSpan(drawable, widthInPixels, textWidth, fontMetrics),
+                            SkeletonTextSpan(drawable, widthInPixels, fontMetrics),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
 
@@ -106,11 +104,12 @@ class SkeletonTextView(
     }
 
     override fun animate(progress: SkeletonAnimation.Progress) {
+        progress.update(drawable)
         view.invalidate()
     }
 
     companion object {
-        const val ZERO_WIDTH_SPACE = "\u200B"
+        const val SPACE = "\u200B"
         const val LINE_BREAK = "\n"
     }
 
@@ -121,7 +120,6 @@ class SkeletonTextView(
     private inner class SkeletonTextSpan(
         val drawable: Drawable,
         val width: Int,
-        val textWidth: Int,
         val fontMetrics: Paint.FontMetricsInt
     ) : LeadingMarginSpan {
 
@@ -141,7 +139,7 @@ class SkeletonTextView(
         }
 
         override fun getLeadingMargin(first: Boolean): Int {
-            return width - textWidth
+            return width
         }
 
         override fun drawLeadingMargin(
