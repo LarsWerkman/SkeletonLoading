@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 
 class SkeletonBinder internal constructor(
     private val style: Drawable,
-    private val views: MutableList<SkeletonView>
+    private val views: MutableList<ISkeletonView>
 ) {
 
     var isShowing = false
@@ -56,8 +56,8 @@ class SkeletonBinder internal constructor(
         isUnbound = true
     }
 
-    data class Builder internal constructor(val views: ArrayList<SkeletonView> = arrayListOf()) {
-        fun bind(view: SkeletonView?) = apply {
+    data class Builder internal constructor(val views: ArrayList<ISkeletonView> = arrayListOf()) {
+        fun bind(view: ISkeletonView?) = apply {
             view?.let {
                 views += it
             }

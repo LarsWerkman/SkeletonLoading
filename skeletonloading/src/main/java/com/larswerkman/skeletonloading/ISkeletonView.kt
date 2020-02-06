@@ -2,7 +2,7 @@ package com.larswerkman.skeletonloading
 
 import android.graphics.drawable.Drawable
 
-interface SkeletonView {
+interface ISkeletonView {
 
     fun setup(drawable: Drawable)
 

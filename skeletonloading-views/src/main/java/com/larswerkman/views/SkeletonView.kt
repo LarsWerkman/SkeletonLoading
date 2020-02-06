@@ -2,18 +2,18 @@ package com.larswerkman.views
 
 import android.graphics.drawable.Drawable
 import android.view.View
+import com.larswerkman.skeletonloading.ISkeletonView
 import com.larswerkman.skeletonloading.SkeletonAnimation
-import com.larswerkman.skeletonloading.SkeletonView
 import com.larswerkman.views.internal.RoundedDrawableWrapper
 
-fun View.skeleton(radius: Float = 0F): SkeletonView {
+fun View.skeleton(radius: Float = 0F): ISkeletonView {
     return SkeletonBackgroundView(this, radius)
 }
 
 class SkeletonBackgroundView(
     private val view: View,
     private val radius: Float = 0F
-) : SkeletonView {
+) : ISkeletonView {
 
     private lateinit var drawable: Drawable
     private var background: Drawable? = null

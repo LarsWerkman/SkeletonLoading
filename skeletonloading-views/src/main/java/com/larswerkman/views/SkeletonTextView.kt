@@ -12,11 +12,11 @@ import android.widget.TextView
 import androidx.core.text.buildSpannedString
 import androidx.core.view.OneShotPreDrawListener
 import androidx.core.view.doOnPreDraw
+import com.larswerkman.skeletonloading.ISkeletonView
 import com.larswerkman.skeletonloading.SkeletonAnimation
-import com.larswerkman.skeletonloading.SkeletonView
 import kotlin.math.ceil
 
-fun TextView.skeleton(width: SkeletonTextView.TextWidth, value: Double): SkeletonView {
+fun TextView.skeleton(width: SkeletonTextView.TextWidth, value: Double): ISkeletonView {
     return SkeletonTextView(this, width, value)
 }
 
@@ -24,7 +24,7 @@ class SkeletonTextView(
     private val view: TextView,
     private val width: TextWidth,
     private val value: Double
-) : SkeletonView {
+) : ISkeletonView {
 
     private lateinit var onPreDraw: (view: View) -> Unit
     private lateinit var drawable: Drawable
