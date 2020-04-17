@@ -64,3 +64,10 @@ fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
 .idea
+
+# General
+.DS_Store
+
+# Do not commit plain-text signing info
+release/*.properties
+release/*.gpg

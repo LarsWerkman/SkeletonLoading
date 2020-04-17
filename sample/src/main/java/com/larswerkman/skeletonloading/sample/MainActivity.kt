@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.larswerkman.skeletonloading.SkeletonLoading
 import com.larswerkman.skeletonloading.animations.AlphaAnimation
-import com.larswerkman.views.ISkeletonTextView
+import com.larswerkman.views.SkeletonTextView
 import com.larswerkman.views.skeleton
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,11 +20,12 @@ class MainActivity : AppCompatActivity() {
         lifecycle.addObserver(loading)
 
         val binder = loading.create {
-            bind(tvTest.skeleton(ISkeletonTextView.TextWidth.LINES, 1.2))
-            bind(ivTest.skeleton(200f))
+            bind(sample_text_view.skeleton(SkeletonTextView.TextWidth.LINES, 1.2))
+            bind(sample_view.skeleton(8F))
+            bind(sample_image_view.skeleton(8F))
         }
 
-        tvTest.setOnClickListener {
+        sample_text_view.setOnClickListener {
             if (binder.isShowing) binder.hide() else binder.show()
         }
 

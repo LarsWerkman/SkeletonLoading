@@ -3,9 +3,8 @@ package com.larswerkman.views
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
-import android.text.Layout
 import android.text.Spannable
-import android.text.style.LeadingMarginSpan
+import android.text.style.ReplacementSpan
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -109,8 +108,8 @@ class SkeletonTextView(
     }
 
     companion object {
-        const val SPACE = "\u200B"
-        const val LINE_BREAK = "\n"
+        const val SPACE = " "
+        const val LINE_BREAK = " \n"
     }
 
     enum class TextWidth {
@@ -121,41 +120,37 @@ class SkeletonTextView(
         val drawable: Drawable,
         val width: Int,
         val fontMetrics: Paint.FontMetricsInt
-    ) : LeadingMarginSpan {
+    ) : ReplacementSpan() {
 
-        var startOffset = 0
-
-        init {
-            val inset = view.layout.width - width
-            val gravity = Gravity.getAbsoluteGravity(view.gravity, view.layoutDirection)
-
-            if (inset > 0) {
-                if (gravity and Gravity.HORIZONTAL_GRAVITY_MASK == Gravity.RIGHT) {
-                    startOffset = inset
-                } else if (gravity and Gravity.HORIZONTAL_GRAVITY_MASK == Gravity.CENTER_HORIZONTAL) {
-                    startOffset = inset / 2
-                }
-            }
-        }
-
-        override fun getLeadingMargin(first: Boolean): Int {
+        override fun getSize(
+            paint: Paint,
+            text: CharSequence?,
+            start: Int,
+            end: Int,
+            fm: Paint.FontMetricsInt?
+        ): Int {
             return width
         }
 
-        override fun drawLeadingMargin(
-            c: Canvas, p: Paint, x: Int, dir: Int,
-            top: Int, baseline: Int, bottom: Int,
-            text: CharSequence, start: Int, end: Int,
-            first: Boolean, layout: Layout
+        override fun draw(
+            canvas: Canvas,
+            text: CharSequence?,
+            start: Int,
+            end: Int,
+            x: Float,
+            top: Int,
+            y: Int,
+            bottom: Int,
+            paint: Paint
         ) {
             drawable.setBounds(
-                x + startOffset,
-                baseline + fontMetrics.ascent,
-                x + width + startOffset,
-                baseline
+                x.toInt(),
+                y + fontMetrics.ascent,
+                x.toInt() + width,
+                y
             )
 
-            drawable.draw(c)
+            drawable.draw(canvas)
         }
     }
 }
