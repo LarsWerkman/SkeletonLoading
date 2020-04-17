@@ -50,9 +50,6 @@ jobs:
         env:
           ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
 
-      - name: Generate cache key
-        run: ./checksum.sh checksum.txt
-
       - uses: actions/cache@v1
         with:
           path: ~/.gradle/caches
