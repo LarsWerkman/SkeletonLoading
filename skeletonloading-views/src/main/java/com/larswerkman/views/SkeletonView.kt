@@ -10,6 +10,34 @@ fun View.skeleton(radius: Float = 0F): ISkeletonView {
     return SkeletonBackgroundView(this, radius)
 }
 
+fun View.skeleton(visibility: Int): ISkeletonView {
+    return SkeletonVisibilityView(this, visibility)
+}
+
+class SkeletonVisibilityView(
+    private val view: View,
+    private val visibility: Int
+) : ISkeletonView {
+
+    private var oldVisibility: Int = View.VISIBLE
+
+    override fun setup(drawable: Drawable) {
+        oldVisibility = view.visibility
+    }
+
+    override fun show() {
+        view.visibility = visibility
+    }
+
+    override fun hide() {
+        view.visibility = oldVisibility
+    }
+
+    override fun animate(progress: SkeletonAnimation.Progress) {
+    }
+
+}
+
 class SkeletonBackgroundView(
     private val view: View,
     private val radius: Float = 0F
