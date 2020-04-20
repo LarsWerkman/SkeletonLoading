@@ -6,6 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import java.util.concurrent.CopyOnWriteArrayList
 
 fun SkeletonLoading(
     context: Context,
@@ -20,7 +21,7 @@ class SkeletonLoading(
     private val animation: SkeletonAnimation? = null
 ) : LifecycleObserver {
 
-    private val binders = arrayListOf<SkeletonBinder>()
+    private val binders = CopyOnWriteArrayList<SkeletonBinder>()
 
     fun create(block: SkeletonBinder.Builder.() -> Unit): SkeletonBinder {
         val builder = SkeletonBinder.Builder()
