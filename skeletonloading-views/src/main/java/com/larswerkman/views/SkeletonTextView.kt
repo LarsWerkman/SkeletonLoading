@@ -5,7 +5,6 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.text.Spannable
 import android.text.style.ReplacementSpan
-import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import androidx.core.text.buildSpannedString
@@ -129,6 +128,13 @@ class SkeletonTextView(
             end: Int,
             fm: Paint.FontMetricsInt?
         ): Int {
+            fm?.apply {
+                top = fontMetrics.top
+                bottom = fontMetrics.bottom
+                ascent = fontMetrics.ascent
+                descent = fontMetrics.descent
+            }
+
             return width
         }
 
