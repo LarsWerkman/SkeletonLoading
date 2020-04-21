@@ -15,7 +15,7 @@ abstract class SkeletonAnimation(
 ) {
 
     private var animator: ValueAnimator? = null
-    private val progress = Progress(start)
+    val progress = Progress(start)
 
     private fun create() {
         animator = ValueAnimator.ofFloat(start, end)

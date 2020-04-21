@@ -23,6 +23,10 @@ class SkeletonLoading(
 
     private val binders = CopyOnWriteArrayList<SkeletonBinder>()
 
+    init {
+        animation?.progress?.update(drawable)
+    }
+
     fun create(block: SkeletonBinder.Builder.() -> Unit): SkeletonBinder {
         val builder = SkeletonBinder.Builder()
         block(builder)
@@ -36,6 +40,8 @@ class SkeletonLoading(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
         animation?.start { progress ->
+            progress.update(drawable)
+
             binders.forEach { binder ->
                 if (binder.isUnbound) {
                     binders.remove(binder)
