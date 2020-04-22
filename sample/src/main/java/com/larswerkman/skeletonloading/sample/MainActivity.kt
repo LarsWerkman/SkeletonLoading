@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         loading = SkeletonLoading(this, R.drawable.skeleton, AlphaAnimation(.1f, .6f))
-        lifecycle.addObserver(loading)
+        loading.register(this)
 
         val binder = loading.create {
             bind(sample_text_view.skeleton(SkeletonTextView.TextWidth.LINES, 1.2))

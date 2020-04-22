@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -35,6 +36,10 @@ class SkeletonLoading(
         binders += binder
 
         return binder
+    }
+
+    fun register(owner: LifecycleOwner) {
+        owner.lifecycle.addObserver(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
