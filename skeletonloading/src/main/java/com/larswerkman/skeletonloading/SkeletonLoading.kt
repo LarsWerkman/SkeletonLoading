@@ -24,18 +24,15 @@ class SkeletonLoading(
 
     private val binders = CopyOnWriteArrayList<SkeletonBinder>()
 
-    init {
-        animation?.progress?.update(drawable)
-    }
-
     fun create(block: SkeletonBinder.Builder.() -> Unit): SkeletonBinder {
         val builder = SkeletonBinder.Builder()
         block(builder)
 
-        val binder = SkeletonBinder(drawable, builder.views)
-        binders += binder
-
-        return binder
+        return SkeletonBinder({
+            drawable.constantState?.newDrawable()?.also {
+                animation?.progress?.update(it)
+            } ?: drawable
+        }, builder.views).also { binders += it }
     }
 
     fun register(owner: LifecycleOwner) {

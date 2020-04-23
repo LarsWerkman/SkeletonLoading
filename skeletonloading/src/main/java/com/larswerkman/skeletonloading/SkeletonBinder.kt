@@ -3,7 +3,7 @@ package com.larswerkman.skeletonloading
 import android.graphics.drawable.Drawable
 
 class SkeletonBinder internal constructor(
-    private val style: Drawable,
+    private val drawable: () -> Drawable,
     private val views: MutableList<ISkeletonView>
 ) {
 
@@ -15,7 +15,7 @@ class SkeletonBinder internal constructor(
 
     init {
         views.forEach {
-            it.setup(style.constantState?.newDrawable() ?: style)
+            it.setup(drawable())
         }
     }
 
