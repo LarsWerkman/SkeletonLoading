@@ -82,7 +82,8 @@ class SkeletonTextView(
     private fun calculateWidth(value: Double, textSize: Float): Int {
         return when (width) {
             TextWidth.CHARACTERS -> textSize * value
-            TextWidth.LINES -> view.layout.width * value.coerceIn(0.0, 1.0)
+            TextWidth.LINES -> (view.width - view.totalPaddingStart - view.totalPaddingEnd) *
+                    value.coerceIn(0.0, 1.0)
         }.toInt()
     }
 
