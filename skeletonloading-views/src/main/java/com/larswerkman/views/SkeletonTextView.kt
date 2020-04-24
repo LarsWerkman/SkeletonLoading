@@ -27,7 +27,9 @@ class SkeletonTextView(
     private lateinit var onPreDraw: (view: View) -> Unit
     private lateinit var drawable: Drawable
 
-    private var listener: OneShotPreDrawListener? = null
+    private var onPreDrawListener: OneShotPreDrawListener? = null
+    private var onReAttachListener: DoOnReAttachListener? = null
+
     private var text: CharSequence? = null
 
     override fun setup(drawable: Drawable) {
@@ -91,13 +93,25 @@ class SkeletonTextView(
         text = view.text
 
         if (::onPreDraw.isInitialized) {
-            listener = view.doOnPreDraw(onPreDraw)
+            fun createOnPreDraw() {
+                onPreDrawListener = view.doOnPreDraw {
+                    onReAttachListener?.removeListener()
+                    onPreDraw(it)
+                }
+            }
+            createOnPreDraw()
+
+            onReAttachListener = DoOnReAttachListener(view) {
+                onPreDrawListener?.removeListener()
+                createOnPreDraw()
+            }
             view.invalidate()
         }
     }
 
     override fun hide() {
-        listener?.removeListener()
+        onPreDrawListener?.removeListener()
+        onReAttachListener?.removeListener()
 
         view.text = text
     }
@@ -114,6 +128,33 @@ class SkeletonTextView(
 
     enum class TextWidth {
         LINES, CHARACTERS
+    }
+
+    private class DoOnReAttachListener(
+        val view: View,
+        val action: () -> Unit
+    ) : View.OnAttachStateChangeListener {
+
+        var detached = false
+
+        init {
+            view.addOnAttachStateChangeListener(this)
+        }
+
+        override fun onViewDetachedFromWindow(v: View?) {
+            detached = true
+        }
+
+        override fun onViewAttachedToWindow(v: View?) {
+            if (detached) {
+                detached = false
+                action()
+            }
+        }
+
+        fun removeListener() {
+            view.removeOnAttachStateChangeListener(this)
+        }
     }
 
     private inner class SkeletonTextSpan(
