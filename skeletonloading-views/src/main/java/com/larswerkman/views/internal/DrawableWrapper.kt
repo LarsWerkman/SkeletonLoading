@@ -8,11 +8,9 @@ import android.view.View
 /**
  * Drawable which delegates all calls to its wrapped [Drawable].
  *
- *
  * The wrapped [Drawable] *must* be fully released from any [View]
  * before wrapping, otherwise internal [Callback] may be dropped.
  *
- * @hide
  */
 open class DrawableWrapper(var wrappedDrawable: Drawable) : Drawable(), Drawable.Callback {
 

@@ -6,14 +6,21 @@ import com.larswerkman.skeletonloading.ISkeletonView
 import com.larswerkman.skeletonloading.SkeletonAnimation
 import com.larswerkman.views.internal.RoundedDrawableWrapper
 
-fun View.skeleton(radius: Float = 0F): ISkeletonView {
-    return SkeletonBackgroundView(this, radius)
-}
-
+/**
+ * Convenient method of creating a [SkeletonVisibilityView] instance for a [View]
+ *
+ * @param visibility One of [View.VISIBLE], [View.INVISIBLE] or [View.GONE]
+ */
 fun View.skeleton(visibility: Int): ISkeletonView {
     return SkeletonVisibilityView(this, visibility)
 }
 
+/**
+ * Base skeleton implementation for [View]'s to set the Visibility based on the loading state
+ *
+ * @param view to be put in a loading state
+ * @param visibility One of [View.VISIBLE], [View.INVISIBLE] or [View.GONE]
+ */
 class SkeletonVisibilityView(
     private val view: View,
     private val visibility: Int
@@ -38,6 +45,21 @@ class SkeletonVisibilityView(
 
 }
 
+/**
+ * Convenient method of creating a [SkeletonBackgroundView] instance for a [View]
+ *
+ * @param radius extra radius that can be added to the skeleton drawable
+ */
+fun View.skeleton(radius: Float = 0F): ISkeletonView {
+    return SkeletonBackgroundView(this, radius)
+}
+
+/**
+ * Base skeleton implementation for [View]'s for the background
+ *
+ * @param view to be put in a loading state
+ * @param radius extra radius that can be added to the skeleton drawable
+ */
 class SkeletonBackgroundView(
     private val view: View,
     private val radius: Float = 0F

@@ -5,8 +5,13 @@ import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 
-class RoundedDrawableWrapper(drawable: Drawable, private val radius: Float) :
-    DrawableWrapper(drawable) {
+/**
+ * A [DrawableWrapper] which clips the corners of the drawable when drawing with a certain radius.
+ */
+open class RoundedDrawableWrapper(
+    drawable: Drawable,
+    private val radius: Float
+) : DrawableWrapper(drawable) {
 
     private val path = Path()
 

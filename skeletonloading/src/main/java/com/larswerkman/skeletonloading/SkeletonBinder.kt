@@ -2,16 +2,32 @@ package com.larswerkman.skeletonloading
 
 import android.graphics.drawable.Drawable
 
+/**
+ * Binds a group of [ISkeletonView]'s that will be *shown* and *hidden* together
+ * to a [SkeletonLoading] instance. A *SkeletonLoading* can have multiple
+ *
+ * @see ISkeletonView
+ * @see SkeletonLoading
+ * @param drawable function to retrieve a new instance of the loading drawable
+ * @param views collections of views that will be bound together
+ */
 class SkeletonBinder internal constructor(
     private val drawable: () -> Drawable,
     private val views: MutableList<ISkeletonView>
 ) {
 
+    /**
+     * Returns whether the binder is currently showing its views.
+     */
     var isShowing = false
-        get
+        private set
 
+    /**
+     * Returns whether the binder has been unbound.
+     * Meaning all reference to its views are cleared and cannot be shown again.
+     */
     var isUnbound = false
-        get
+        private set
 
     init {
         views.forEach {
@@ -19,12 +35,22 @@ class SkeletonBinder internal constructor(
         }
     }
 
+    /**
+     * Trigger the *animate* on all bound views regardless if the views isShowing
+     *
+     * @see ISkeletonView.animate
+     * @see isShowing
+     * @param progress current progress of the animation
+     */
     internal fun update(progress: SkeletonAnimation.Progress) {
         views.forEach {
             it.animate(progress)
         }
     }
 
+    /**
+     * Show all bound views for loading
+     */
     fun show() {
         if (isShowing) {
             return
@@ -37,6 +63,9 @@ class SkeletonBinder internal constructor(
         isShowing = true
     }
 
+    /**
+     * Hide all bound views for loading and restores their state
+     */
     fun hide() {
         if (!isShowing) {
             return
@@ -49,6 +78,13 @@ class SkeletonBinder internal constructor(
         isShowing = false
     }
 
+    /**
+     * Hide all views and remove their references to prevent memory leaks.
+     * This will be called by the *SkeletonLoading* instance if it's registered to the lifecycle of your app.
+     *
+     * @see hide
+     * @see SkeletonLoading.register
+     */
     fun unbind() {
         hide()
         views.clear()
@@ -56,11 +92,27 @@ class SkeletonBinder internal constructor(
         isUnbound = true
     }
 
-    data class Builder internal constructor(val views: ArrayList<ISkeletonView> = arrayListOf()) {
-        fun bind(view: ISkeletonView?) = apply {
+    /**
+     * Builder used to construct the list of views that need to be bound.
+     */
+    data class Builder constructor(val views: ArrayList<ISkeletonView> = arrayListOf()) {
+
+        /**
+         * Add the *ISkeletonView* view to the list of to be bound views.
+         *
+         * @param view view that needs to be bound
+         */
+        infix fun bind(view: ISkeletonView?) = apply {
             view?.let {
                 views += it
             }
+        }
+
+        /**
+         * Convenient way to bind [ISkeletonView]
+         */
+        operator fun ISkeletonView.unaryPlus() {
+            views += this
         }
     }
 }

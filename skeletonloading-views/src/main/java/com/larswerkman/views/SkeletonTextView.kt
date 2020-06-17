@@ -14,10 +14,23 @@ import com.larswerkman.skeletonloading.ISkeletonView
 import com.larswerkman.skeletonloading.SkeletonAnimation
 import kotlin.math.ceil
 
+/**
+ * Convenient method of creating a [SkeletonTextView] instance for a [TextView]
+ *
+ * @param width type of TextWidth we want to apply to our view
+ * @param value width value used in conjunction with the [width] type
+ */
 fun TextView.skeleton(width: SkeletonTextView.TextWidth, value: Double): ISkeletonView {
     return SkeletonTextView(this, width, value)
 }
 
+/**
+ * Basic skeleton implementation for [TextView]'s
+ *
+ * @param view to be put in a loading state
+ * @param width type of TextWidth we want to apply to our view
+ * @param value width value used in conjunction with the [width] type
+ */
 class SkeletonTextView(
     private val view: TextView,
     private val width: TextWidth,
@@ -30,6 +43,10 @@ class SkeletonTextView(
     private var onPreDrawListener: OneShotPreDrawListener? = null
     private var onReAttachListener: DoOnReAttachListener? = null
 
+    /**
+     * Text of the [TextView] before the loading state,
+     * that will be restored when the loading state is hidden.
+     */
     private var text: CharSequence? = null
 
     override fun setup(drawable: Drawable) {
@@ -126,10 +143,24 @@ class SkeletonTextView(
         const val LINE_BREAK = " \n"
     }
 
+    /**
+     * Types of width we can use to fill the [TextView] with a skeleton text.
+     */
     enum class TextWidth {
-        LINES, CHARACTERS
+        /**
+         * Number of lines, with fractions allowed.
+         */
+        LINES,
+
+        /**
+         * Number of characters based on the font character width, fractions are ignored.
+         */
+        CHARACTERS
     }
 
+    /**
+     * Helper class for performing an action when the view get re-attached to the window.
+     */
     private class DoOnReAttachListener(
         val view: View,
         val action: () -> Unit
@@ -157,6 +188,10 @@ class SkeletonTextView(
         }
     }
 
+    /**
+     * [Spannable] that will replace the text inside of the [TextView]
+     * with a [drawable] of a certain [width] and a height based on the font height.
+     */
     private inner class SkeletonTextSpan(
         val drawable: Drawable,
         val width: Int,
