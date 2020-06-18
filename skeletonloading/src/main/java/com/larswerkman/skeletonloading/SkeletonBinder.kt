@@ -95,21 +95,12 @@ class SkeletonBinder internal constructor(
     /**
      * Builder used to construct the list of views that need to be bound.
      */
-    data class Builder constructor(val views: ArrayList<ISkeletonView> = arrayListOf()) {
+    class Builder constructor(val views: ArrayList<ISkeletonView> = arrayListOf()) {
 
         /**
          * Add the *ISkeletonView* view to the list of to be bound views.
          *
          * @param view view that needs to be bound
-         */
-        infix fun bind(view: ISkeletonView?) = apply {
-            view?.let {
-                views += it
-            }
-        }
-
-        /**
-         * Convenient way to bind [ISkeletonView]
          */
         fun ISkeletonView.bind() {
             views += this
