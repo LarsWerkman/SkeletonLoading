@@ -111,7 +111,7 @@ class SkeletonBinder internal constructor(
         /**
          * Convenient way to bind [ISkeletonView]
          */
-        operator fun ISkeletonView.unaryPlus() {
+        fun ISkeletonView.bind() {
             views += this
         }
     }

@@ -34,8 +34,8 @@ class MainActivity : Activity() {
         loading.register(this)
 
         val binder = loading.create {
-            //These are all different ways of binding a view to the builder
-            +sample_text_view.skeleton(SkeletonTextView.TextWidth.LINES, 1.2)
+            //These are all valid ways of binding a view to the builder
+            sample_text_view.skeleton(SkeletonTextView.TextWidth.LINES, 1.2).bind()
             bind(sample_view.skeleton(8F))
             this bind sample_image_view.skeleton(8F)
         }
