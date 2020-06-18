@@ -45,9 +45,9 @@ class MainActivity : Activity() {
 ## Download
 ```groovy
 dependencies {
-    implementation 'com.larswerkman:skeletonloading:0.0.6'
-    implementation 'com.larswerkman:skeletonloading-views:0.0.6'
-    implementation 'com.larswerkman:skeletonloading-animations:0.0.6'
+    implementation 'com.larswerkman:skeletonloading:0.0.7'
+    implementation 'com.larswerkman:skeletonloading-views:0.0.7'
+    implementation 'com.larswerkman:skeletonloading-animations:0.0.7'
 }
 ```
 
